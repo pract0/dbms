@@ -1,0 +1,33 @@
+create table Borrower(Roll_no int primary key, Name varchar(20), DateofIssue date, NameofBook varchar(20), Status varchar(5));
+insert into Borrower values(12, 'Vaibhav', '2022-08-25', 'SPM', 'I');
+insert into Borrower values(79, 'Shrihari', '2022-08-12', 'DBMS', 'I');
+insert into Borrower values(20, 'Pravin', '2022-09-1', 'TOC', 'I');
+insert into Borrower values(40, 'Pravin', '2022-10-29', 'CNS', 'R');
+insert into Borrower values(50, 'Ayush', '2022-11-15', 'DSA', 'R');
+
+create table Fine(Roll_no int primary key, Date date, Amt int);
+
+delimiter $$
+create procedure calc_fine_lib(in Roll int)
+begin
+declare fine1 int;
+declare noofdays int;
+declare issuedate date;
+declare exit handler for sqlexception select 'create table definition';
+select DateofIssue into issuedate from Borrower where Roll_no=Roll;
+select datediff(curdate(), issuedate) into noofdays;
+if noofdays>15 and noofdays<=30 then
+set fine1=noofdays*5;
+insert into Fine values(Roll, curdate(), fine1);
+elseif noofdays>30 then
+set fine1=((noofdays-30)*50) + 15*5;
+insert into Fine values(Roll, curdate(), fine1);
+else
+insert into Fine values(Roll, curdate(), 0);
+end if;
+update Borrower set status='R' where Roll_no=Roll;
+end $$
+
+call calc_fine_lib(1) $$
+call calc_fine_lib(2) $$
+select * from Fine $$

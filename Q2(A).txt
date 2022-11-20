@@ -1,0 +1,51 @@
+create table salesman(salesman_id int primary key, name varchar(40), city varchar(40), commission float);
+desc salesman;
+create table customer(customer_id int primary key,customer_name varchar(40), city varchar(40), grade int, salesman_id int, foreign key(salesman_id) references salesman(salesman_id));
+desc customer;
+create table orders(order_id int primary key,purch_amt float,order_date date, customer_id int, salesman_id int, foreign key(salesman_id) references salesman(salesman_id), foreign key(customer_id) references customer(customer_id));
+desc orders;
+
+insert into salesman Values(1,'Shrihari','Pune',0.15);
+insert into salesman Values(2,'Ganesh','Nagar',0.13);
+insert into salesman Values(3,'Ramesh','Mumbai',0.11);
+insert into salesman Values(4,'Ravi','Baramati',0.12);
+insert into salesman Values(4,'Vaibhav','Solapur',0.17);
+select * from salesman;
+
+insert into customer values(101, 'Pravin', 'Pune', 100, 1);
+insert into customer values(102, 'Kalpesh', 'Nagar', 200, 2);
+insert into customer values(103, 'Ayush', 'Mumbai', 100, 3);
+insert into customer values(104, 'Raj', 'Solapur', 200, 4);
+insert into customer values(105, 'Sanket', 'Baramati', 200, 4);
+select * from customer;
+
+insert into orders Values(500, 1500, '2022-10-05', 101, 1);
+insert into orders Values(501, 1000, '2022-10-18', 102, 2);
+insert into orders Values(502, 2200, '2022-10-18', 103, 3);
+insert into orders Values(503, 2550, '2022-11-01', 104, 4);
+insert into orders Values(506, 200, '2022-11-03', 101, 2);
+insert into orders Values(509, 200, '2022-11-10', 102, 1);
+insert into orders Values(511, 560, '2022-11-15', 104, 4);
+select * from orders;
+
+alter table salesman add mobile_no int(10);
+desc salesman;
+
+select city,max(grade) from customer group by city;
+
+alter table customer drop column grade;
+desc salesman;
+
+alter table salesman modify mobile_no float(20);
+desc salesman;
+
+create INDEX ind_1 ON orders(salesman_id);
+show index from salesman;
+
+create view v1 as select name,city from salesman where city='Pune';
+select * from v1;
+
+select customer_id,max(purch_amt) from orders group by customer_id;
+
+
+

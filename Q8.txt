@@ -1,0 +1,42 @@
+create table borrower(rollin int, name varchar(20), dateofissue date, nameofbook varchar(20), status varchar(10));
+create table library_audit(rollin int, name varchar(20), dateofissue date, nameofbook varchar(20), status varchar(10), ts timestamp);
+
+insert into borrower values(79, 'Shrihari', '2022-08-12', 'DBMS', 'I');
+insert into borrower values(12, 'Vaibhav', '2022-08-25', 'SPM', 'I');
+insert into borrower values(20, 'Pravin', '2022-09-1', 'TOC', 'I');
+insert into borrower values(20, 'Pravin', '2022-09-1', 'TOC', 'I');
+insert into borrower values(40, 'Pravin', '2022-10-29', 'CNS', 'R');
+insert into borrower values(50, 'Ayush', '2022-11-15', 'DSA', 'R');
+
+delimiter $$
+create trigger after_insert after insert on borrower for each row
+begin
+insert into library_audit values(new.rollin, new.name, new.dateofissue, new.nameofbook, new.status, current_timestamp);
+end;
+$$
+
+insert into borrower values(55, 'Ram', '2022-11-02', 'CNS', 'I'); $$
+select * from borrower; $$
+select * from library_audit; $$
+
+
+create trigger after_delete after delete on borrower for each row
+begin
+insert into library_audit values(old.rollin, old.name, old.dateofissue,old.nameofbook, old.status, current_timestamp());
+end;
+$$
+
+delete from borrower where name='Ram'; $$
+select * from borrower; $$ 
+select * from library_audit; $$
+
+
+create trigger after_update after update on borrower for each row
+begin
+insert into library_audit values(new.rollin, new.name, new.dateofissue,new.nameofbook, new.status, current_timestamp());
+end;
+$$
+
+update borrower set name='ABC' where rollin=50; $$
+select * from borrower; $$
+select * from library_audit; $$

@@ -1,0 +1,55 @@
+create table stud_mark(name varchar(20),total_marks int);
+desc stud_mark;
+
+create table result(roll_no int,name varchar(20),class varchar(20));
+desc result;
+
+insert into stud_mark values('Shrihari', 1000);
+insert into stud_mark values('Pravin', 970);
+insert into stud_mark values('Vaibhav', 940);
+insert into stud_mark values('Kalpesh', 860);
+insert into stud_mark values('Ram', 400);
+select * from stud_mark;
+
+insert into result values(1, 'Shrihari', 'TE');
+insert into result values(2, 'Pravin', 'TE');
+insert into result values(3, 'Vaibhav', 'TE');
+insert into result values(4, 'Kalpesh', 'TE');
+insert into result values(5, 'Ram', 'TE');
+select * from result;
+
+
+delimiter $$
+create procedure proc_grade(IN rno int, out grade varchar(20))
+begin
+declare m int;
+select total_marks into m from stud_mark where name = (select name from result where roll_no=rno);
+if m>=990 and m<=1500 then
+select 'Distinction' into grade;
+update result set class='Distinction' where roll_no=rno;
+elseif m>=900 and m<=989 then
+select 'First class' into grade;
+update result set class='First class' where roll_no=rno;
+elseif m>=825 and m<=899 then
+select 'Higher secondary class' into grade;
+update result set class='Higher secondary class' where roll_no=rno;
+else
+select '--' into grade;
+update result set class='--' where roll_no=rno;
+end if;
+end $$
+
+delimiter $$
+create function fun_grade(rno int)
+returns varchar(20)
+deterministic
+begin
+declare grade varchar(20);
+call proc_grade(rno,grade);
+return grade;
+end $$
+
+select fun_grade(1) $$
+select fun_grade(2) $$
+select fun_grade(3) $$
+select * from result $$

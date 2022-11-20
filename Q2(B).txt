@@ -1,0 +1,52 @@
+create table Salesman(salesman_id int, name varchar(225),city varchar(225),commission float);
+
+create table Customer(customer_id int,customer_name varchar(20),city varchar(20),grade int,salesman_id int);
+
+create table Orde(order_no int,purchase_Amt int,order_date date,customer_id int,salesman_id int);
+
+insert into Salesman values('5001','Shrihari','Paris','5.20');
+insert into Salesman values('5002','kalpesh','Pune','4.27');
+insert into Salesman values('5003','Nitin','goa','4.09');
+
+select * from Salesman;
+
+insert into Customer values('501','Saurabh','Nagpur','80','001');
+insert into Customer values('502','Amit','Chandrapur','200','002');
+insert into Customer values('503','Soham','New york','178','001');
+
+select *from Customer;
+
+insert into Orde values('1001','3400','2022-11-12','501','001');
+insert into Orde values('1002','2000','2022-10-01','502','002');
+insert into Orde values('1003','5000','2022-10-12','503','003');
+
+select *from Orde;
+
+select salesman_id from orde;
+
+select name , city from Salesman where city='Paris';
+
+select* from Customer where grade='200';
+
+select order_no, order_date , purchase_Amt from orde where salesman_id='5001';
+
+select *from Customer where customer_name like '%n';
+
+update Salesman set city='Delhi' where city='pune';
+delete from Customer where customer_name= 'Amit';
+select sum(purchase_amt) from Orde;
+
+select customer_id,order_date, max(purchase_amt) from Orde group by customer_id,order_date;
+select * from Customer where city='New York'or not grade='100';
+
+
+
+
+
+
+ 
+
+
+
+
+

@@ -1,0 +1,5 @@
+db.createCollection("Student")
+db.Student.insertMany([ {Name:'Shrihari', Class:'TE', Address:'Solapur', Age:21, Fees:12000 }, {Name:'Vaibhav', Class:'TE', Address:'Pune', Age:22, Fees:15000}, {Name:'vijay', Class:'BE', Address:'Pune', Age:21, Fees:100000} ])
+db.Student.find()
+db.Student.update({Age:22}, {$set:{Age:21}})
+db.Student.remove({Name:'Vijay'})

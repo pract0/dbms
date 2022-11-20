@@ -1,0 +1,80 @@
+package com.company;
+
+import java.util.*;
+
+import com.mongodb.*;
+
+public class MONGO {
+ private static void choice_input() {
+ System.out.println("\n1.Insert Document\n2.Update Document\n3.Delete Document\n4.Display\n5.Exit");
+ }
+ public static void main(String[] args) throws Exception{
+ String ID, Name, City, Ph_No;
+ Scanner scanner = new Scanner(System.in);
+ int choice;
+ try {
+ MongoClient mongo = new MongoClient("localhost", 27017);
+ DB db = mongo.getDB("mydb5");
+ DBCollection collection = db.getCollection("Bloodbank");
+ do {
+ choice_input();
+ System.out.println("Enter your choice: ");
+ choice = scanner.nextInt();
+ switch (choice) {
+ case 1:
+ BasicDBObject document = new BasicDBObject();
+ String ch;
+ do {
+ System.out.println("Enter ID : ");
+ ID = scanner.next();
+ System.out.println("Enter Name : ");
+ Name = scanner.next();
+
+ document.put(ID, Name);
+ System.out.println("Do you want to enter more(y/n)? ");
+ ch = scanner.next();
+ } while (!ch.equals("n"));
+ collection.insert(document);
+ break;
+ case 2:
+ BasicDBObject searchObj = new BasicDBObject();
+ System.out.println("Enter searched ID : ");
+ ID = scanner.next();
+ System.out.println("Enter searched Name : ");
+ Name = scanner.next();
+ searchObj.put(ID, Name);
+ BasicDBObject newObj = new BasicDBObject();
+ System.out.println("Enter new ID : ");
+ ID = scanner.next();
+ System.out.println("Enter new Name : ");
+ Name = scanner.next();
+ newObj.put(ID, Name);
+ collection.update(searchObj, newObj);
+ break;
+ case 3:
+ System.out.println("Enter removable ID : ");
+ ID = scanner.next();
+ System.out.println("Enter removable Name : ");
+ Name = scanner.next();
+ BasicDBObject removableObj = new BasicDBObject();
+ removableObj.put(ID, Name);
+ collection.remove(removableObj);
+ break;
+ case 4:
+ DBCursor cursorDoc = collection.find();
+ while (cursorDoc.hasNext()) {
+ System.out.println(cursorDoc.next());
+ }
+ break;
+ case 5:
+ System.out.println("Exit Successfully...");
+ System.exit(0);
+ break;
+ default:
+ System.out.println("Wrong Choice, Try Again");
+ }
+ } while (choice != 6);
+ } catch (Exception e) {
+ System.out.println(e);
+ }
+ } }
