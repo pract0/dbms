@@ -4,7 +4,6 @@ create table library_audit(rollin int, name varchar(20), dateofissue date, nameo
 insert into borrower values(79, 'Shrihari', '2022-08-12', 'DBMS', 'I');
 insert into borrower values(12, 'Vaibhav', '2022-08-25', 'SPM', 'I');
 insert into borrower values(20, 'Pravin', '2022-09-1', 'TOC', 'I');
-insert into borrower values(20, 'Pravin', '2022-09-1', 'TOC', 'I');
 insert into borrower values(40, 'Pravin', '2022-10-29', 'CNS', 'R');
 insert into borrower values(50, 'Ayush', '2022-11-15', 'DSA', 'R');
 
